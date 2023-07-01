@@ -1,0 +1,50 @@
+Úkolem je realizovat třídy CRange a CRangeList, která budou reprezentovat celočíselné intervaly a jejich seznamy.
+
+Předpokládáme intervaly celých čísel. Interval může obsahovat pouze jedno číslo, nebo více čísel. Jednoprvkové
+intervaly budeme zapisovat pouze jako jedno číslo, tedy např. 42. Víceprvkové intervaly pak v lomených závorkách.
+Např. interval <1..5> obsahuje čísla 1,2,3,4,5. Interval celých čísel implementuje třída CRange. Protože chceme
+pracovat s velkým rozsahem čísel, bude tato třída ukládat meze intervalu jako čísla typu long long (chceme pracovat
+i se zápornými čísly). Rozhraní CRange je:
+
+a)konstruktor (lo, hi)
+  inicializuje instanci na interval v rozsahu lo až hi. Konstruktor kontroluje, že lo ≤ hi. Pokud podmínka není
+  splněna, bude hozena výjimka std::logic_error (standardní výjimka z hlavičkového souboru stdexcept).
+b)další
+  Další rozhraní odvoďte podle konstrukcí z přiloženého ukázkového kódu, můžete si samozřejmě přidat i další metody
+  závislé na vaší implementaci. Je pouze potřeba dodržet velikost instance - max. 2x velikost long long.
+  
+Třída CRangeList bude reprezentovat seznam takových intervalů. Při skládání intervalů do instance CRangeList budeme
+ukládat intervaly tak kompaktně, jak to jen lze. Tedy například sousedící nebo překrývající se intervaly sloučíme
+do jednoho delšího intervalu. Instance CRangeList bude nabízet rozhraní pro vkládání intervalů, odebírání
+intervalů, testování hodnoty a výstup. Konkrétní požadované rozhraní bude:
+
+a)implicitní konstruktor
+  inicializuje prázdný seznam intervalů
+b)destruktor, kopírující konstruktor, op=
+  budou implementované, pokud jsou zapotřebí a pokud automaticky generovaná podoba nestačí. Doporučujeme použít
+  vhodný kontejner pro ukládání intervalů a kopírování a přesouvání ponechat na automaticky generovaném kódu.
+c)includes(long long) / includes (CRange)
+  metody zjistí, zda seznam intervalů obsahuje zadanou hodnotu / celý zadaný interval hodnot. Pokud ano, vrací
+  true, pokud ne, vrací false.
+d)+=
+  pomocí tohoto operátoru se budou přidávat další intervaly do seznamu. Operátor zajistí, že přidané intervaly
+  budou uloženy kompaktně (slučování intervalů). Protože pracujeme s celými čísly, je slučování intervalů poněkud
+  neobvyklé. Je přirozené, že se sloučí překrývající se intervaly, např.:
+  <10..20> a <15..30>,
+  <10..30> a <15..18>, případně
+  <10..20> a <20..30>,
+  Sloučí se ale i intervaly <10..20> a <21..30>, přestože se nedotýkají ani nepřekrývají. Dohromady však pokrývají
+  celý interval <10..30>. Intervaly <10..19> a <21..30> se už ale nesloučí, nepokrývají číslo 20.
+e)-=
+  pomocí tohoto operátoru se budou odebírat další intervaly ze seznamu. Odebírání lze chápat i jako množinový
+  rozdíl. Operátor zajistí, že po odebrání budou intervaly uloženy kompaktně (odstraňování nepotřebných intervalů).
+f)=
+  pomocí tohoto operátoru lze nastavit obsah na seznam intervalů na pravé straně (samozřejmě kompaktně uložený).
+g)==, !=
+  operátory porovnají obsah dvou instancí. Za shodné považujeme dvě instance, které mají identický seznam
+  intervalů.
+h)<<
+  operátor zobrazí obsah seznamu do zadaného výstupního streamu. Seznam bude uzavřen ve složených závorkách,
+  jednotlivé intervaly oddělené čárkou. Jednoprvkové intervaly budou zobrazené jako číslo, delší intervaly pak v
+  lomených závorkách. Formát výpisu je zřejmý z ukázek. Intervaly budou zobrazeny seřazené vzestupně.
+  
