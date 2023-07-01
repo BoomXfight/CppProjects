@@ -1,0 +1,35 @@
+Pandemie COVID-19 se opět vymyká kontrole, a proto je opět potřeba přitvrdit. Pro zlepšení fungování
+trasování má stát ze zákona přímý přístup do telefonních seznamů trasovaných občanů. Vaším úkolem je
+napsat program, který zjednoduší vyhledávání kontaktů v těchto telefonních seznamech a vyrobí potřebné
+reporty.
+
+Vaším úkolem je implementovat funkci:
+
+bool report ( const string & fileName, ostream & out );
+	a)fileName je textový řetězec obsahující cestu k telefonní seznamu a dotazům,
+  b)out je výstupní stream, na který se má vypsat report,
+  c)návratovou hodnotou funkce je false pokud nastane během zpracovávání souboru nebo telefonního
+    seznamu v něm uloženém chyba nebo true pokud se zpracování povede bez problémů
+    
+Vstupní soubor obsahuje nejprve záznamy telefonního seznamu. Následuje prázdná řádka a pak seznam
+dotazů, na které musí váš program vrátit odpověď na předaný výstupní stream. Každý záznam telefonního
+seznamu je oddělený novou řádkou, v záznamu je po sobě křestní jméno, příjmení a telefonní číslo.
+Jednotlivé položky jsou odděleny libovolným počtem bílých znaků (různých od odřádkování). Následné
+dotazy obsahují vždy právě jedno slovo.
+
+Funkce vyhledává záznamy, které se shodují v celém jméně nebo příjmení nebo obojím. Naopak částečná
+shoda “Joh” a “John” akceptována není. Vyhovující záznamy vypište do zadaného streamu, pořadí na
+výstupu musí odpovídat pořadí v telefonním seznamu. Všechny výpisy zobrazujte na předaný výstupní
+stream (ne na standardní cout ani chybový výstup cerr).
+
+Formát vstupu a výstupu je vidět níže na ukázce práce funkce. Pokud je vstup neplatný, funkce to musí
+detekovat a vrátit false. Za nesprávný vstup považujte:
+
+a)chybí nebo přebývá nějaký atribut,
+b)telefonní číslo nemá právě devět číslic,
+c)telefonní číslo obsahuje jiné znaky než číslice,
+d)telefonní číslo začíná na 0,
+e)za telefonním číslem na řádce pokračuje nějaký další vstup (mohou následovat bílé znaky, ale nic
+  jiného),
+f)chybí prázdná řádka za seznamem čísel.
+
