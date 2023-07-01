@@ -1,0 +1,64 @@
+Úkolem je realizovat třídu CPersonalAgenda, která bude implementovat databázi zaměstnanců.
+
+Pro usnadnění práce HR oddělení máme realizovanou databázi zaměstnanců. Pro sledované zaměstnance si pamatujeme
+jméno, příjmení, email a plat. V průběhu evidence zaměstnance se tyto údaje mohou měnit, údaje chceme vyhledávat
+a chceme mít přehled o platech.
+
+Zaměstnanec je identifikován svým jménem a příjmením nebo svým e-mailem. Firemní postupy zajišťují, že e-mail je
+unikátní přes celou databázi. Dále, jména a příjmení se mohou opakovat, ale dvojice (jméno, příjmení) je opět v
+databázi unikátní. Tedy v databázi může být mnoho lidí s příjmením Svoboda, mnoho lidí může mít jméno Petr, ale
+zaměstnanec Svoboda Petr může být v databázi v daném okamžiku pouze jeden. Při porovnávání jmen, příjmení i 
+e-mailů rozlišujeme malá a velká písmena (case sensitive).
+
+Veřejné rozhraní je uvedeno níže. Obsahuje následující:
+
+a)Konstruktor bez parametrů. Tento konstruktor inicializuje instanci třídy tak, že vzniklá instance je zatím
+  prázdná (neobsahuje žádné záznamy).
+b)Destruktor. Uvolňuje prostředky, které instance alokovala.
+c)Metoda add(name, surname, email, salary) přidá do existující databáze další záznam. Parametry name a surname
+  reprezentují jméno a příjmení, parametr email udává mailovou adresu a salary plat. Metoda vrací hodnotu true,
+  pokud byl záznam přidán, nebo hodnotu false, pokud přidán nebyl (protože již v databázi existoval záznam se
+  stejným jménem a příjmením, nebo záznam se stejným e-mailem).
+d)Metody del (name, surname) / del (email) odstraní záznam z databáze. Parametrem je jednoznačná identifikace
+  pomocí jména a příjmení (první varianta) nebo pomocí emailu (druhá varianta). Pokud byl záznam skutečně
+  odstraněn, vrátí metoda hodnotu true. Pokud záznam odstraněn nebyl (protože neexistoval zaměstnanec s touto
+  identifikací), vrátí metoda hodnotu false.
+e)Metoda changeName(email, newName, newSurname) změní zaměstnanci jeho jméno a příjmení. Zaměstnanec je
+  identifikován pomocí e-mailu email, jméno zaměstnance je změněno na newName/newSurname. Metoda vrátí true pro
+  úspěch, false pro chybu (neexistuje zaměstnanec s takovým e-mailem, nově přidělené jméno/příjmení není
+  unikátní).
+f)Metoda changeEmail(name, surname, newEmail) změní zaměstnanci jeho email. Zaměstnanec je identifikován pomocí
+  jména a příjmení name/surname, e-mail zaměstnance je změněn na newEmail. Metoda vrátí true pro úspěch, false 
+  pro chybu (neexistuje zaměstnanec s takovým jménem a příjmením, nově přidělený e-mail není unikátní).
+g)Metody setSalary (name, surname, salary) / setSalary (email, salary) změní výši výplaty zadanému zaměstnanci.
+  Varianty jsou dvě - zaměstnanec je identifikován buď svým jménem a příjmením, nebo svojí e-mailovou adresou.
+  Pokud metoda uspěje, vrací true, pro neúspěch vrací false (neexistující zaměstnanec).
+h)Metody getSalary (name, surname) / getSalary (email) zjistí výši výplaty zadaného zaměstnance. Varianty jsou
+  dvě - zaměstnanec je identifikován buď svým jménem a příjmením, nebo svojí e-mailovou adresou. Pokud metoda
+  uspěje, vrací výši výplaty zaměstnance, pro neúspěch (neexistující zaměstnanec) vrací hodnotu 0.
+i)Metody getRank (name, surname, rankMin, rankMax) / getRank (email, rankMin, rankMax) zjistí jak dobře je
+  zaměstnanec placen ve vztahu k ostatním. Výsledkem je pozice výplaty zadaného zaměstnance na pomyslném žebříčku
+  výplat od nejhorší (nejnižší) k nejlepší (nejvyšší). Parametrem je identifikace zaměstnance (podle varianty buď
+  jménem a příjmením, nebo e-mailovou adresou), parametry rankMin/rankMax jsou výstupní, do nich funkce zapíše
+  pozici výplaty hledaného zaměstnance v žebříčku. Protože stejnou výplatu může dostávat více zaměstnanců, je
+  výstupem dvojice hodnot - interval min-max. Pokud například hledaný zaměstnanec dostává výplatu 20000, 37
+  zaměstnanců dostává výplatu nižší a 21 dalších zaměstnanců dostává výplatu stejnou (tedy plat 20000 dostává
+  celkem 22 zaměstnanců), pak výsledkem je rankMin=37 a rankMax=37+22-1=58. Návratovou hodnotou funkce je true 
+  pro úspěch (zadaný zaměstnanec nalezen, výstupní parametry vyplněny) nebo false (zadaný zaměstnanec nenalezen,
+  výstupní parametry ponechány beze změn).
+j)Metoda getFirst ( outName, outSurname ) slouží pro procházení databází. Zaměstnance chceme procházet podle
+  abecedy (seřazené vzestupně podle příjmení, v případě stejných příjmení podle jména). Metoda vrátí prvního
+  zaměstnance v takto seřazeném seznamu, jeho jméno a příjmení zapíše do zadaných výstupních parametrů outName/
+  outSurname. Návratovou hodnotou je true pro úspěch (databáze nebyla prázdná) nebo false (prázdná databáze,
+  výstupní parametry ponechány beze změn).
+k)Metoda getNext ( name, surname, outName, outSurname ) slouží k procházení zaměstnanců podobně jako metoda
+  getFirst. Tato metoda vrátí dalšího zaměstnance, který v seřazeném seznamu zaměstnanců (viz getFirst) následuje
+  po zaměstnanci name/surname. Jméno následujícího zaměstnance zapíše do zadaných výstupních parametrů outName/
+  outSurname. Návratovou hodnotou je true pro úspěch (zaměstnanec name/surname nalezen a není poslední v seřazeném
+  seznamu) nebo false pro neúspěch (zaměstnanec name/surname nenalezen nebo je poslední v seznamu). V případě neúspěchu
+  metoda nebude měnit výstupní parametry outName/outSurname.
+  
+Implementace třídy musí být efektivní z hlediska nároků na čas i nároků na paměť. Jednoduché lineární řešení nestačí
+(pro testovací data vyžaduje čas přes 5 minut). Předpokládejte, že vkládání a mazání zaměstnance jsou řádově méně časté
+než ostatní operace, tedy zde je lineární složitost akceptovatelná.  
+
